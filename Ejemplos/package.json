@@ -1,0 +1,25 @@
+{
+  "name": "node_bedu_colima",
+  "version": "1.0.0",
+  "description": "Proyecto de ejepmlo en node con npm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "ejemplo",
+    "nodejs",
+    "javascript",
+    "js"
+  ],
+  "author": "Noel Escobedo",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.27.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}

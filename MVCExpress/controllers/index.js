@@ -5,7 +5,7 @@ const destinationsModel = require('../models/destinations');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   const destinations = destinationsModel.getDestinations();
-  res.render('dashboard', { destinations });
+  res.render('destinations/list', { destinations });
 });
 
 router.post('/api/v1/destinations', function(req, res, next) {

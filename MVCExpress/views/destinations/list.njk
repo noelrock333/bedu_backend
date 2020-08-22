@@ -1,0 +1,9 @@
+{% extends "../dashboard.njk" %}
+
+{% block content %}
+  {% for destination in destinations %}
+    <h2>{{ destination.title | upper }}</h2>
+    <div>{{ destination.description }}</div>
+    <img src="{{ destination.image }}" alt="">
+  {% endfor %}
+{% endblock %}

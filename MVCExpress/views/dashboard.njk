@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/style.css">
   <title>Document</title>
 </head>
 <body>
-  <% destinations.forEach(destination => { %>
-    <h2><%= destination.title %></h2>
-    <div><%= destination.description %></div>
-    <img src="<%= destination.image %>" alt="">
-  <% }) %>
+  <header>
+    <h1>Bedu travels</h1>
+  </header>
+  {% block content %}{% endblock %}
+  <footer>Todos los derechos reservados</footer>
 </body>
 </html>

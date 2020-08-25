@@ -1,19 +1,68 @@
-const destinations = require('../destinations');
+const db = require('../db_config');
 
-const getDestinations = () => {
-  return destinations;
+const getAll = async () => {
+  try {
+    const destinations = await db.Destination.findAll({ raw: true });
+    console.log(destinations);
+    return destinations;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-const updateDestination = (id) => {
-
+const create = async (destination) => {
+  try {
+    await db.Destination.create(destination);
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
 }
 
-const getDestination = (id) => {
-  return destinations.find(item => item.id == id);
+const getById = async (id) => {
+  try {
+    const destination = await db.Destination.findOne({
+      raw: true,
+      where: { id: id }
+    });
+    return destination;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
+
+const update = async (id, destination) => {
+  try {
+    await db.Destination.update(destination, {
+      where: { id: id },
+    });
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
+
+const destroy = async (id) => {
+  try {
+    await db.Destination.destroy({
+      where: {
+        id: id
+      }
+    });
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
 }
 
 module.exports = {
-  getDestinations,
-  updateDestination,
-  getDestination
+  getAll,
+  create,
+  getById,
+  update,
+  destroy,
 }

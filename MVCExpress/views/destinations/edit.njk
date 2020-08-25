@@ -1,0 +1,11 @@
+{% extends "../dashboard.njk" %}
+
+{% block content %}
+  <form method="post" action="/destinations/{{ destination.id }}/save">
+    <h2>Edita el destino</h2>
+    <input type="text" name="title" value="{{ destination.title }}">
+    <input type="text" name="description" value="{{ destination.description }}">
+    <input type="text" name="image" value="{{ destination.image }}">
+    <input type="submit" value="Guardar">
+  </form>
+{% endblock %}

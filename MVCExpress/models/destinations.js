@@ -7,6 +7,7 @@ const getAll = async () => {
     return destinations;
   } catch (err) {
     console.log(err);
+    throw Error(err);
   }
 }
 
@@ -16,7 +17,7 @@ const create = async (destination) => {
     return true;
   } catch (err) {
     console.log(err);
-    return false;
+    throw Error(err);
   }
 }
 
@@ -29,7 +30,7 @@ const getById = async (id) => {
     return destination;
   } catch (err) {
     console.log(err);
-    return false;
+    throw Error(err);
   }
 }
 
@@ -41,7 +42,7 @@ const update = async (id, destination) => {
     return true;
   } catch (err) {
     console.log(err);
-    return false;
+    throw Error(err);
   }
 }
 
@@ -55,7 +56,7 @@ const destroy = async (id) => {
     return true;
   } catch (err) {
     console.log(err);
-    return false;
+    throw Error(err);
   }
 }
 

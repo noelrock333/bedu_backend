@@ -3,6 +3,11 @@ const router = express.Router();
 const destinationsModel = require('../models/destinations');
 const { verifyAccessToken } = require('../auth');
 
+const path = require('path')
+const uuid = require('uuid');
+const fs = require('fs');
+const AWS = require('aws-sdk');
+
 // var admin = require("firebase-admin");
 // const { Storage } = require('@google-cloud/storage');
 
@@ -35,6 +40,36 @@ router.get('/:id/show', async (req, res, next) => {
   }
 });
 
+const uploadFileToS3 = async (filePathAndName, fileName) => {
+  // Subiendo archivos a S3 Amazon Web Services
+  // https://stackabuse.com/uploading-files-to-aws-s3-with-node-js
+  // Haciendo público contenido del bucket
+  // https://havecamerawilltravel.com/photographer/how-allow-public-access-amazon-bucket/
+  const { AWS_ACCESS_KEY_ID, AWS_SECRET_KEY, S3_BUCKET_NAME } = process.env;
+  const s3 = new AWS.S3({
+    accessKeyId: AWS_ACCESS_KEY_ID,
+    secretAccessKey: AWS_SECRET_KEY
+  });
+  const fileContent = fs.readFileSync(filePathAndName);
+  const params = {
+    Bucket: S3_BUCKET_NAME,
+    Key: `${uuid.v4()}${path.extname(fileName)}`, // El nombre del archivo que quieres guardar en S3
+    Body: fileContent,
+    ACL: 'public-read' // Concede permisos de lectura publica al archivo
+  };
+
+  // Subiendo archivos al bucket
+  return new Promise((resolve, reject) => {
+    s3.upload(params, function(err, data) {
+      if (err) {
+        return reject(err);
+      }
+      console.log(`File uploaded successfully. ${data.Location}`);
+      return resolve(data.Location);
+    });
+  })
+};
+
 router.post('/create', async (req, res) => {
   // Como subir archivos con node.js
   // https://attacomsian.com/blog/uploading-files-nodejs-express
@@ -42,9 +77,12 @@ router.post('/create', async (req, res) => {
     const destination = req.body;
     if (req.files) {
       let destinationPhoto = req.files.image;
-      const filename = `./public/images/${destinationPhoto.name}`;
-      destinationPhoto.mv(filename);
-      destination.image = `/images/${destinationPhoto.name}`;
+      const filePathAndName = `./public/images/${destinationPhoto.name}`;
+      const fileName = destinationPhoto.name;
+      await destinationPhoto.mv(filePathAndName);
+      // destination.image = `/images/${destinationPhoto.name}`;
+      destination.image = await uploadFileToS3(filePathAndName, fileName);
+      fs.unlink(filePathAndName);
 
       // Cloud storage
       // var bucket = admin.storage().bucket();

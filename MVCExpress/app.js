@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const sassMiddleware = require('node-sass-middleware');
 const nunjucks = require('nunjucks');
+const fileUpload = require('express-fileupload');
 const cors = require("cors");
 
 const destinationsRouter = require('./controllers/destinations');
@@ -26,6 +27,10 @@ app.set('view engine', 'njk');
 
 // CORS: nos ayuda a aceptar peticiones desde otros servidores ya que de lo contrario el servidor las bloqueará por defecto
 app.use(cors());
+
+app.use(fileUpload({
+  createParentPath: true
+}));
 
 app.use(logger('dev'));
 app.use(express.json());

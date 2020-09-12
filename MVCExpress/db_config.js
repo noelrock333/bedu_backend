@@ -10,6 +10,24 @@ const Destination = sequelize.define("destinations", {
   timestamps: false
 });
 
+const User = sequelize.define("users", {
+  name: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  password: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  email: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+    unique: true
+  }
+}, {
+  timestamps: false
+});
+
 (async () => {
   await sequelize.sync({ force: false });
   // Code here
@@ -17,6 +35,7 @@ const Destination = sequelize.define("destinations", {
 
 module.exports = {
   Destination,
+  User
 };
 
 // async function connect() {
